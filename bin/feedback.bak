@@ -4,19 +4,19 @@ import 'package:http/http.dart' as http;
 import 'dart:io' as io;
 import 'package:path/path.dart' as p;
 
-void main(List<String> arguments) async
+void main(List<String> arguments) async 
 {
   // This example uses the Google Books API to search for books about http.
   // https://developers.google.com/books/docs/overview
-  //
+  // 
   // https://ec.europa.eu/info/law/better-regulation/brpapi/allFeedback?publicationId=22174011&page=0&size=100
   // https://ec.europa.eu/info/law/better-regulation/brpapi/feedbackById?feedbackId=2230523&initiativeId=12872
   // 2230546
   // https://ec.europa.eu/info/law/better-regulation/brpapi/feedbackById?feedbackId=2230546&initiativeId=12872
-  //
+  // 
   // atachment: (090166e5dc0e29d3 == documentId)
   // https://ec.europa.eu/info/law/better-regulation/api/download/090166e5dc0e29d3
-
+  
   int page = 0;
   int errcnt = 0;
   bool eof = false;
@@ -27,7 +27,7 @@ void main(List<String> arguments) async
 
   while (!eof)
   {
-      print ('Load page :$page');
+      print ('Load page :$page'); 
 
       var url =
           Uri.https('ec.europa.eu', '/info/law/better-regulation/brpapi/allFeedback', { 'publicationId' : '22174011', 'page': page.toString(), 'size': '100'});
@@ -36,7 +36,7 @@ void main(List<String> arguments) async
       // Await the http get response, then decode the json-formatted response.
       var response = await http.get(url);
 
-      if (response.statusCode == 200)
+      if (response.statusCode == 200) 
       {
         var jsonResponse = convert.jsonDecode(response.body);
         if ((jsonResponse as Map<dynamic,dynamic>).containsKey('_embedded'))
@@ -56,13 +56,13 @@ void main(List<String> arguments) async
                 feedback['surname']   = item['surname'];
                 feedback['dateFeedback']  = item['dateFeedback'];
                 feedback['feedback']  = item['feedback'];
-                feedback['publication']  = item['publication'];
+                feedback['publication']  = item['publication'];                
                 feedback['country']   = item['country'];
-                feedback['userType']  = item['userType'];
-                feedback['publication']  = item['publication'];
+                feedback['userType']  = item['userType'];                
+                feedback['publication']  = item['publication'];                
                 feedback['attachments']  = item['attachments'];
                 feedback['organization']  = item['organization'];
-
+                
                 if (feedback['firstName'].toString().contains('Daris'))
                 {
                     var brk = 1;
@@ -79,15 +79,15 @@ void main(List<String> arguments) async
 
                         print ('Attachment: ${attUrl.toString()}');
 
-                        var attResponse = await http.get(attUrl);
+                        var attResponse = await http.get(attUrl);   
 
-                        if (attResponse.statusCode == 200)
+                        if (attResponse.statusCode == 200) 
                         {
                             var dir = './att/${att['documentId']}';
                             var fname = '$dir/${att['ersFileName']}';
 
                             print ('Write file:$fname');
-                            await Directory(dir).create(recursive: true);
+                            await Directory(dir).create(recursive: true);  
 
                             var buffer = attResponse.bodyBytes;
 
@@ -99,11 +99,11 @@ void main(List<String> arguments) async
                 }
                 /*if (feedback['feedback'].toString().contains('...'))
                 {
-                  var itemUrl =  Uri.https('ec.europa.eu', 'info/law/better-regulation/brpapi/feedbackById',
+                  var itemUrl =  Uri.https('ec.europa.eu', 'info/law/better-regulation/brpapi/feedbackById', 
                                             { 'feedbackId' : item['id'].toString(), 'initiativeId' : '12872'});
                   print ('Long feedback: ${itemUrl.toString()}');
                   var itemResponse = await http.get(itemUrl);
-                  if (itemResponse.statusCode == 200)
+                  if (itemResponse.statusCode == 200) 
                   {
                       var itemJson = convert.jsonDecode(itemResponse.body);
                       feedback['feedback'] = itemJson['feedback'];
@@ -118,15 +118,15 @@ void main(List<String> arguments) async
 
                 result.add(feedback);
             }
-
+            
             page++;
         }
         else
         {
             eof = true;
         }
-      }
-      else
+      } 
+      else 
       {
         print('Request failed with status: ${response.statusCode}.');
         if (++errcnt>20) return;
@@ -152,7 +152,7 @@ void toHtml(String fileName,List<dynamic> items) async
 {
     StringBuffer builder = new StringBuffer();
 
-    builder.write('<html>\r\n<body>\r\n');
+    builder.write('<html>\r\n<body>\r\n'); 
     int index = 1;
 
     for (var item in items)
@@ -188,4 +188,5 @@ void toHtml(String fileName,List<dynamic> items) async
     await file.writeAsString(builder.toString());
 
 }
+
 
